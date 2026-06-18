@@ -2,6 +2,7 @@ import { Icons } from "./Icons";
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Searchproducts } from "../Redux/Actions/ProductsActions";
+import ProductCard from "./ProductCard";
 
 type Message = {
     role: "user" | "assistant";
@@ -18,6 +19,7 @@ const MainBar = () => {
     const { products, loading, error } = useSelector(
         (state: any) => state.products
     );
+
 
     const HandleClicks = () => {
         if (!input.trim()) return;
@@ -37,9 +39,10 @@ const MainBar = () => {
         setInput("");
     };
 
+    console.log("products", products);
     useEffect(() => {
-        if (!loading && products?.length > 0) {
-            const responseText = products
+        if (!loading && products?.products?.length > 0) {
+            const responseText = products.message || products.products
                 .map((product: any) => product.name)
                 .join("\n");
 
@@ -102,6 +105,10 @@ const MainBar = () => {
                     </div>
                 ))}
 
+                {products &&
+                    products?.products?.map((item: any, index: number) => (
+                        <ProductCard key={index} product={item} />
+                    ))}
 
                 {loading && (
                     <div className="w-full flex justify-start mt-5">
