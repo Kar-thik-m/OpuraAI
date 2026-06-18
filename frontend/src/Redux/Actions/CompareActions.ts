@@ -1,4 +1,4 @@
-import { BackendUrl } from "../../Url.ts";
+import { BackendUrl } from "../../Url";
 import {
     compareStart,
     compareSuccess,

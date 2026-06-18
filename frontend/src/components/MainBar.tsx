@@ -10,7 +10,7 @@ type Message = {
 };
 
 const MainBar = () => {
-    const [isOpen, setIsOpen] = useState(false);
+
     const [input, setInput] = useState("");
     const [messages, setMessages] = useState<Message[]>([]);
 
@@ -24,7 +24,7 @@ const MainBar = () => {
     const HandleClicks = () => {
         if (!input.trim()) return;
 
-        setIsOpen(true);
+
 
         setMessages((prev) => [
             ...prev,
