@@ -105,13 +105,19 @@ const MainBar = () => {
                     </div>
                 ))}
 
-                {products && products?.products && (
+                {products && products?.products ? (
                     <div className="flex gap-4 overflow-x-auto py-4 scrollbar-hide">
                         {products.products.map((item: any, index: number) => (
                             <ProductCard key={index} product={item} />
                         ))}
                     </div>
+                ) : (
+                    <>
+                        <div>Product not found or invalid input</div>
+                    </>
                 )}
+
+
 
                 {loading && (
                     <div className="w-full flex justify-start mt-5">
@@ -148,7 +154,6 @@ const MainBar = () => {
                 )}
             </div>
 
-            {/* Input Area */}
             <div className="mt-5 flex justify-center">
                 <div className="w-full max-w-[700px] flex items-center border border-gray-200 rounded-[20px] bg-[#f5f5f5] shadow-sm">
 
