@@ -1,6 +1,9 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addToCompare } from "../Redux/Slices/CompareSlice";
+import { addToCart } from "../Redux/Slices/CartSlice";
+import { toggleWishlist } from "../Redux/Slices/WishlistSlice";
+import type { RootState } from "../Redux/Store";
 import { Icons } from "./Icons";
 import { useState } from "react";
 
@@ -12,10 +15,24 @@ const ProductCard = ({ product }: Props) => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [isHovered, setIsHovered] = useState(false);
+    const [addedToCart, setAddedToCart] = useState(false);
+
+    const wishlistItems = useSelector((state: RootState) => state.wishlist.wishlistItems);
+    const isWishlisted = wishlistItems.some((item: any) => item._id === product._id);
 
     const handleCompare = () => {
         dispatch(addToCompare(product));
         navigate("/compare");
+    };
+
+    const handleAddToCart = () => {
+        dispatch(addToCart(product));
+        setAddedToCart(true);
+        setTimeout(() => setAddedToCart(false), 2000);
+    };
+
+    const handleToggleWishlist = () => {
+        dispatch(toggleWishlist(product));
     };
 
     return (
@@ -24,8 +41,11 @@ const ProductCard = ({ product }: Props) => {
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
         >
-            <div className="absolute top-6 right-6 z-10 text-gray-400 hover:text-red-500 cursor-pointer transition-colors">
-                <Icons.Heart size={20} />
+            <div 
+                className={`absolute top-6 right-6 z-10 cursor-pointer transition-colors ${isWishlisted ? "text-red-500" : "text-gray-400 hover:text-red-500"}`}
+                onClick={handleToggleWishlist}
+            >
+                <Icons.Heart size={20} filled={isWishlisted} />
             </div>
 
             <div className="bg-gray-100 rounded-xl mb-3 overflow-hidden">
@@ -58,8 +78,11 @@ const ProductCard = ({ product }: Props) => {
 
             {isHovered ? (
                 <div className="mt-4 flex flex-col gap-2">
-                    <button className="w-full py-2 border border-gray-300 rounded-xl text-sm font-semibold hover:bg-gray-50 transition-colors">
-                        Add to cart
+                    <button 
+                        onClick={handleAddToCart}
+                        className={`w-full py-2 border rounded-xl text-sm font-semibold transition-colors ${addedToCart ? "bg-green-50 text-green-600 border-green-200" : "border-gray-300 hover:bg-gray-50"}`}
+                    >
+                        {addedToCart ? "✓ Added to cart" : "Add to cart"}
                     </button>
                     <button 
                         onClick={handleCompare}
