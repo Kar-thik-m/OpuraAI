@@ -39,12 +39,14 @@ const MainBar = () => {
         setInput("");
     };
 
-    console.log("products", products);
+
     useEffect(() => {
-        if (!loading && products?.products?.length > 0) {
-            const responseText = products.message || products.products
-                .map((product: any) => product.name)
-                .join("\n");
+        if (!loading && products && (products.success !== undefined || (Array.isArray(products) && products.length > 0))) {
+            const productList = Array.isArray(products) ? products : products.products;
+
+            const responseText = products.message || (productList?.length > 0
+                ? productList.map((product: any) => product.name).join("\n")
+                : "I couldn't find any products matching your search.");
 
             setMessages((prev) => {
                 const last = prev[prev.length - 1];
@@ -105,19 +107,13 @@ const MainBar = () => {
                     </div>
                 ))}
 
-                {products && products?.products ? (
+                {products && (Array.isArray(products) ? products : products?.products)?.length > 0 && (
                     <div className="flex gap-4 overflow-x-auto py-4 scrollbar-hide">
-                        {products.products.map((item: any, index: number) => (
+                        {(Array.isArray(products) ? products : products.products).map((item: any, index: number) => (
                             <ProductCard key={index} product={item} />
                         ))}
                     </div>
-                ) : (
-                    <>
-                        <div>Product not found or invalid input</div>
-                    </>
                 )}
-
-
 
                 {loading && (
                     <div className="w-full flex justify-start mt-5">
