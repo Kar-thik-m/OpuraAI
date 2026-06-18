@@ -105,10 +105,13 @@ const MainBar = () => {
                     </div>
                 ))}
 
-                {products &&
-                    products?.products?.map((item: any, index: number) => (
-                        <ProductCard key={index} product={item} />
-                    ))}
+                {products && products?.products && (
+                    <div className="flex gap-4 overflow-x-auto py-4 scrollbar-hide">
+                        {products.products.map((item: any, index: number) => (
+                            <ProductCard key={index} product={item} />
+                        ))}
+                    </div>
+                )}
 
                 {loading && (
                     <div className="w-full flex justify-start mt-5">
@@ -132,7 +135,7 @@ const MainBar = () => {
                     </div>
                 )}
 
-                {!isOpen && (
+                {messages.length === 0 && (
                     <div className="h-full flex flex-col items-center justify-center px-4">
                         <h1 className="text-[44px] font-semibold bg-gradient-to-r from-[#4F8AFF] to-[#8F59FF] bg-clip-text text-transparent mb-2">
                             Hello Opura
