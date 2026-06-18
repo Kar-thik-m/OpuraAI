@@ -1,4 +1,4 @@
-import { BackendUrl } from "../../Url";
+import { BackendUrl } from "../../Url.ts";
 import {
     searchStart,
     searchSuccess,
