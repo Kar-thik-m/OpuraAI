@@ -8,19 +8,19 @@ const app = express();
 
 dotenv.config();
 
-
+// CORS FIRST
 app.use(cors({
     origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true
 }));
 
-app.options("*", cors());
-
 app.use(express.json());
+
+// DB
 Connection_To_DB();
 
-
+// ROUTES
 app.use("/api/products", productsRoutes);
 
 app.get("/", (req, res) => {
